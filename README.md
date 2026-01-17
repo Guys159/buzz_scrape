@@ -14,3 +14,5 @@ This project takes a BuzzFeed shopping page (saved as HTML) and pulls out the pr
    - the image URL
 5. Prints the result as JSON.
 
+## To run 
+php scrape.php
