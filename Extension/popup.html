@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { 
+      width: 450px; 
+      padding: 15px; 
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+      background: #f5f5f5; 
+      direction: ltr;
+    }
+    h2 { 
+      color: #333; 
+      font-size: 16px; 
+      margin-bottom: 15px; 
+      padding-bottom: 10px; 
+      border-bottom: 2px solid blue; 
+    }
+    .row { 
+      display: flex; 
+      align-items: center; 
+      margin-bottom: 12px; 
+      gap: 8px;
+    }
+    input { 
+      flex-grow: 1; 
+      padding: 8px 10px; 
+      border: 1px solid #ccc; 
+      border-radius: 4px; 
+      font-size: 11px; 
+      direction: ltr;
+      background: white;
+      font-family: 'Courier New', monospace;
+    }
+    input:focus {
+      outline: none;
+      border-color: blue;
+      box-shadow: 0 0 4px rgba(66, 133, 244, 0.3);
+    }
+    .pick-btn {
+      background:blue;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      cursor: pointer;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: bold;
+      white-space: nowrap;
+      transition: all 0.3s;
+    }
+    .pick-btn:hover {
+      background: red
+    }
+    .pick-btn.active {
+      background: red;
+    }
+    .label {
+      font-size: 12px;
+      font-weight: bold;
+      color: #333;
+      width: 120px;
+      text-align: left;
+    }
+    .copy-btn {
+      background: green ;
+      color: white;
+      border: none;
+      padding: 8px 8px;
+      cursor: pointer;
+      font-weight: bold;
+      border-radius: 3px;
+      font-size: 11px;
+      transition: 0.2s;
+    }
+    .copy-btn:hover {
+      background: red;
+    }
+
+    .scrape-btn {
+      background: rgb(112, 56, 195);
+      color: white;
+      border: none;
+      padding: 10px 10px;
+      text-align: center;
+      cursor: pointer;
+      border-radius: 4px;
+      font-size: 13px;
+      font-weight: bold;
+      width: 20%;
+    }
+
+    .scrape-btn:hover {
+      background: red;
+      transform: scale(1.05);
+      transition-duration: 2s ;
+    }
+
+
+
+    .status {
+      padding: 8px 10px;
+      margin-bottom: 12px;
+      border-radius: 4px;
+      font-size: 12px;
+      display: none;
+    }
+    .status.info {
+      background: white;
+      color: blue;
+      border-left: 3px solid blue;
+      display: block;
+    }
+    .status.success {
+      background: #f1f8e9;
+      color: green;
+      border-left: 3px solid green;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <h2>Collect Data</h2>
+  
+  <div id="status" class="status"></div>   <!-- class is for styling, id is for JS to update status messages -->
+
+  <div id="inputs-container">
+    <div class="row">
+      <span class="label">Review</span>
+      <input type="text" id="review" placeholder="Choose PATH"">
+      <button class="pick-btn" data-type="review">Choose</button>
+      <button class="copy-btn" data-type="review" title="Copy">Copy</button>
+    </div>
+    <div class="row">
+      <span class="label">Title</span>
+      <input type="text" id="title" placeholder="Choose PATH"">
+      <button class="pick-btn" data-type="title">Choose</button>
+      <button class="copy-btn" data-type="title" title="Copy">Copy</button>
+    </div>
+    <div class="row">
+      <span class="label">Image</span>
+      <input type="text" id="image" placeholder="Choose PATH"">
+      <button class="pick-btn" data-type="image">Choose</button>
+      <button class="copy-btn" data-type="image" title="Copy">Copy</button>
+    </div>
+    <div class="row">
+      <span class="label">Description</span>
+      <input type="text" id="description" placeholder="Choose PATH"">
+      <button class="pick-btn" data-type="description">Choose</button>
+      <button class="copy-btn" data-type="description" title="Copy">Copy</button>
+    </div>
+
+    <div class="row">
+      <button class="scrape-btn" data-type="description">Scrape</button>
+    </div>
+
+
+
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
