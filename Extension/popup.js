@@ -35,6 +35,9 @@ document.querySelectorAll(".pick-btn").forEach((btn) => {
   });
 });
 
+
+
+
 // Query the active tab and send a message to content.js to enable picker mode
 document.querySelectorAll(".copy-btn").forEach((btn) => {
   btn.addEventListener("click", (e) => {
@@ -53,6 +56,8 @@ document.querySelectorAll(".copy-btn").forEach((btn) => {
       });
   });
 });
+
+
 
 
 //Load values from storage into inputs
@@ -80,10 +85,10 @@ function showStatus(message, type = "info") {
 }
 
 //Load paths when popup is opened
+//Only after that, set up event listeners for copy buttons to allow copying selectors to clipboard
 document.addEventListener("DOMContentLoaded", () => {
   loadPaths();
-});
-
-
+  console.log("DOM fully loaded and parsed");
+  });
 
 

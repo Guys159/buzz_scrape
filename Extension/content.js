@@ -10,6 +10,10 @@ let pickerActive = false;  // Is picker mode active?
 let activeType = null;     // Current data type (title, image, etc.)
 let highlightedElement = null;  // Currently highlighted element
 let originalStyles = new Map();  // Stores original element styles
+let highlightedElementParent = null;  // Currently highlighted element's parent
+let originalStylesParent = new Map();  // Stores original element's parent styles
+
+
 
 // Listen for messages to enable picker mode from popup, storing the active type in local storage
 // and changing cursor
@@ -43,9 +47,9 @@ save it to local storage under the active type, and exit picker mode.
 
 document.addEventListener('click', (e) => {
   if (!pickerActive) return;
-  e.preventDefault();
-  e.stopPropagation();
-  const selector = getOptimalSelector(e.target);
+  e.preventDefault(); 
+  e.stopPropagation();  
+  const selector = getSelector(e.target);
   let data = {};
   data[activeType] = selector;
   chrome.storage.local.set(data, () => {
@@ -59,25 +63,34 @@ document.addEventListener('click', (e) => {
 
 
 
-// Generate optimal CSS selector for an element
-function getOptimalSelector(el) {
+// Generate CSS selector for a DOM element
+function getSelector(el) {  
   if (el.id && el.id.trim()) {
     return `#${el.id}`;
-  }
-
-  if (el.classList.length > 0) {
-    const classes = Array.from(el.classList).join('.');
-    return `${el.tagName.toLowerCase()}.${classes}`;
-  }
 }
 
-// Highlight an element with red styling
+ if (el.classList.length > 0) {
+    const classes = Array.from(el.classList).join('.');
+    return `${el.tagName.toLowerCase()}.${classes}`;
+  } 
+
+}
+
+// Highlight an element with red styling and its parent with blue styling, while saving original styles to restore later
 function highlightElement(el) {
   if (highlightedElement) {
     if (originalStyles.has(highlightedElement)) {
       const original = originalStyles.get(highlightedElement);
       Object.assign(highlightedElement.style, original);
       originalStyles.delete(highlightedElement);
+    }
+  }
+
+   if (highlightedElementParent) {
+    if (originalStylesParent.has(highlightedElementParent)) {
+      const originalParent = originalStylesParent.get(highlightedElementParent);
+      Object.assign(highlightedElementParent.style, originalParent);
+      originalStylesParent.delete(highlightedElementParent);
     }
   }
 
@@ -88,15 +101,33 @@ function highlightElement(el) {
     boxShadow: el.style.boxShadow
   });
 
+
   el.style.outline = '3px solid rgb(234, 67, 53)';
   el.style.outlineOffset = '-3px';
-  el.style.backgroundColor = 'rgba(234, 67, 53, 0.15)';
+  el.style.backgroundColor = 'rgba(2, 2, 2, 0.15)';
   el.style.boxShadow = 'inset 0 0 10px rgba(234, 67, 53, 0.3)';
 
+ 
+
+  originalStylesParent.set(el.parentElement, {
+    outline: el.parentElement.style.outline,
+    outlineOffset: el.parentElement.style.outlineOffset,
+    backgroundColor: el.parentElement.style.backgroundColor,
+    boxShadow: el.parentElement.style.boxShadow
+  });
+
+  el.parentElement.style.outline = '3px solid rgb(66, 133, 244)';
+  el.parentElement.style.outlineOffset = '8px';
+  
+
   highlightedElement = el;
+  highlightedElementParent = el.parentElement;
 }
 
-// Remove highlight and restore original styles
+
+
+
+// Remove highlight and restore original styles for both the highlighted element and its parent
 function removeHighlight() {
   if (highlightedElement && originalStyles.has(highlightedElement)) {
     const original = originalStyles.get(highlightedElement);
@@ -104,5 +135,13 @@ function removeHighlight() {
     originalStyles.delete(highlightedElement);
     highlightedElement = null;
   }
+
+  if (highlightedElementParent && originalStylesParent.has(highlightedElementParent)) {
+    const originalParent = originalStylesParent.get(highlightedElementParent);
+    Object.assign(highlightedElementParent.style, originalParent);
+    originalStylesParent.delete(highlightedElementParent);
+    highlightedElementParent = null;
+  }
 }
+
 
